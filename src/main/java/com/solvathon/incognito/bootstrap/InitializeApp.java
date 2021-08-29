@@ -11,7 +11,8 @@ public class InitializeApp implements CommandLineRunner {
     private final LoginService loginService;
     private final QuoteService quoteService;
 
-    public InitializeApp(LoginService loginService, QuoteService quoteService) {
+    public InitializeApp(LoginService loginService,
+                         QuoteService quoteService) {
         this.loginService = loginService;
         this.quoteService = quoteService;
     }

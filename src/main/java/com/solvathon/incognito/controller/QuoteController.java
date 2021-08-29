@@ -1,6 +1,7 @@
 package com.solvathon.incognito.controller;
 
 
+import com.solvathon.incognito.exception.UserNotFoundException;
 import com.solvathon.incognito.service.LoginService;
 import com.solvathon.incognito.service.QuoteService;
 import org.springframework.http.HttpStatus;
@@ -15,22 +16,19 @@ import org.springframework.web.bind.annotation.RestController;
 public class QuoteController {
 
     private final QuoteService quoteService;
-    private final LoginService loginService;
 
-
-    public QuoteController(QuoteService quoteService, LoginService loginService) {
+    public QuoteController(QuoteService quoteService) {
         this.quoteService = quoteService;
-        this.loginService = loginService;
     }
 
     @GetMapping("/quote")
     public ResponseEntity<?> getUserPolicy(@RequestHeader("userId") Integer userId) {
 
-        if (quoteService.isValidateUser(userId)) {
-            return new ResponseEntity<>(quoteService.getQuotes(userId), HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>("Not a valid user", HttpStatus.OK);
+        if (userId != null) {
+            return new ResponseEntity<>(quoteService.getQuotes(), HttpStatus.OK);
         }
+
+        throw new UserNotFoundException("User Id not found in header");
     }
 
 }

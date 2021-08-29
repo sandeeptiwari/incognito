@@ -1,30 +1,34 @@
 package com.solvathon.incognito.service;
 
+import com.solvathon.incognito.exception.UserNotFoundException;
 import com.solvathon.incognito.model.Login;
-import com.solvathon.incognito.model.User;
+import com.solvathon.incognito.model.entity.User;
+import com.solvathon.incognito.model.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
 import java.util.Map;
 
 @Service
 public class LoginService {
-    private Map<String, User> users = new HashMap<>();
+    private final UserRepository userRepository;
 
-    public String login(Login user) {
-        User u = users.getOrDefault(user.getUsername(), null);
-        return u == null ? "Fail" : "Success"; // Success if user available in map
+    public LoginService(UserRepository userRepository) {
+        this.userRepository = userRepository;
     }
 
-    public Map<String, User> getUsers() {
-        return users;
+    public User login(Login user) {
+        return userRepository.findByUsername(user.getUsername())
+                .orElseThrow(() -> new UserNotFoundException("User Not Found"));
     }
 
     public void init() {
-        User user1 = new User(1001, "Jhon", "jhon123");
-        users.put(user1.getUsername(), user1);
+        User doeJhon = userRepository.findByUsername("doeJhon").orElse(null);
+        if (doeJhon == null) {
+            User user1 = new User("Jhon", "doe", "doeJhon", "jhon@123");
+            userRepository.save(user1);
 
-        User user2 = new User(1002, "Tom", "tom123");
-        users.put(user2.getUsername(), user2);
+            User user2 = new User("Jhon", "Milton", "jhonmilton", "jhonmilton@123");
+            userRepository.save(user2);
+        }
     }
 }

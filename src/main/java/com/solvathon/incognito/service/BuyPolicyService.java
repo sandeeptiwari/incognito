@@ -1,6 +1,6 @@
 package com.solvathon.incognito.service;
 
-import com.solvathon.incognito.model.Policy;
+import com.solvathon.incognito.model.entity.Policy;
 import org.springframework.stereotype.Service;
 
 
@@ -19,13 +19,13 @@ public class BuyPolicyService {
     public String buyPolicy(int userId, int policyId) {
 
 
-        Policy quote = quoteService.getQuoteMap().get(policyId);
+        /*Policy quote = quoteService.getQuoteMap().get(policyId);
         Policy policyPurchased = new Policy(policyId, quote.getPremium(), quote.getFees(),
                 quote.getEffectiveDate(), quote.getPolicyExpirationDate(), quote.getPolicyYear(),
                 quote.getInsuranceType(), quote.getStatus(), userId, quote.getPolicyId());
 
         policyService.getPolicyMap().put(policyService.getPolicyMap().size() + 1, policyPurchased);
-
+*/
         return "Policy successfully purchased";
     }
 
